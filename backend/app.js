@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 // eslint-disable-next-line no-unused-vars, import/no-extraneous-dependencies
 const helmet = require('helmet');
+const cors = require('cors');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { createUserValid, loginValid } = require('./middlewares/validation');
@@ -14,6 +15,7 @@ const { PORT = 3000, bd = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 const app = express();
 
+app.use(cors());
 app.use(helmet());
 
 app.use(express.json());
