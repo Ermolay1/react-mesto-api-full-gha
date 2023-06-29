@@ -43,5 +43,6 @@ class AuthApi {
       }).then((res) => this._checkError(res));
     }
   }
-  const authApi = new AuthApi("https://auth.nomoreparties.co");
+  const authApi = new AuthApi(//"https://auth.nomoreparties.co"
+  "mesto.studentslesha.nomoreparties.sbs");
   export default authApi;
