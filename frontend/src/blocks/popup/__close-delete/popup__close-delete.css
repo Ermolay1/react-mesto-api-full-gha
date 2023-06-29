@@ -1,0 +1,31 @@
+
+.popup__close-delete{
+    position: relative;
+    bottom: calc(240px);
+    left: calc(435px);
+    width: 32px;
+    height: 32px;
+    background-image: url(../../../images/close-icon.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    transition: opacity .3s linear;
+    cursor: pointer;
+
+  }
+
+  .popup__close-delete:hover {
+    opacity: 0.6;
+  }
+
+  @media screen and (max-width: 590px) {
+    .popup__close-delete {
+      width: 20px;
+      height: 20px;
+      background-size: 20px;
+      bottom: calc(230px);
+      left: calc(282px);
+    }
+  }
