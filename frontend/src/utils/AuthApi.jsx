@@ -44,5 +44,6 @@ class AuthApi {
   }
 }
 const authApi = new AuthApi(//"https://auth.nomoreparties.co"
-"http://localhost:3000");
+//"http://localhost:3000"
+"mesto.studentslesha.nomoreparties.sbs");
 export default authApi;
