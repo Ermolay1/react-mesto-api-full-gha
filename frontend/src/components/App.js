@@ -228,7 +228,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [navigate]);
 
   const handleSignOut = () => {
     setIsLoggedIn(false);

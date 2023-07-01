@@ -13,7 +13,7 @@ function ImagePopup({isOpen, onClose, card }) {
             document.addEventListener('keydown', handleEscClose)
             return () => document.removeEventListener('keydown', handleEscClose)
         }
-    }, [isOpen])
+    }, [isOpen, onClose])
 
     return (
         <section className={popupClass} onClick={() => onClose()}

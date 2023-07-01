@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+// eslint-disable-next-line import/no-unresolved
 const cors = require('cors');
 // eslint-disable-next-line no-unused-vars, import/no-extraneous-dependencies
 const helmet = require('helmet');
@@ -27,6 +28,11 @@ app.post('/signup', createUserValid, createUser);
 
 app.use(usersRouter);
 app.use(cardsRouter);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 app.use((req, res, next) => {
   next(new NotFound('Страница по этому адресу не найдена'));
 });

@@ -36,7 +36,7 @@ function Header({ email, onSignOut }) {
       };
     }
     setHeaderInfo(headerInfo);
-  }, [ location ]);
+  }, [email, location]);
 
   return (
       <header className="header">

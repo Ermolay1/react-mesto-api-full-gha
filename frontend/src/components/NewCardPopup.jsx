@@ -34,6 +34,7 @@ function NewCardPopup({ isOpen, isLoading, onNewCard, onClose }) {
   };
 
   const setBlurHandler = (e) => {
+    // eslint-disable-next-line default-case
     switch (e.target.name) {
       case "name":
         setNameDirty(true);

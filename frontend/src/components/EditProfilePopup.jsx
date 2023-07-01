@@ -39,6 +39,7 @@ function EditProfilePopup({ isOpen, isLoading, onUpdateUser, onClose }) {
   };
 
   const setBlurHandler = (e) => {
+    // eslint-disable-next-line default-case
     switch (e.target.name) {
       case "name":
         setNameDirty(true);

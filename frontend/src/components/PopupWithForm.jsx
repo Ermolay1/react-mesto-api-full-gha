@@ -20,7 +20,7 @@ function PopupWithForm({
       document.addEventListener("keydown", handleEscClose);
       return () => document.removeEventListener("keydown", handleEscClose);
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   const popupClass = `popup  popup_type_${name} ${
     isOpen ? "popup_opened" : ""
