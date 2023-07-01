@@ -139,7 +139,7 @@ class Api {
 const api = new Api(
   //"https://mesto.nomoreparties.co/v1/cohort-61",
  // "71ce217b-0d84-4894-b27b-2d906663c6db"
- "mesto.studentslesha.nomoreparties.sbs"
+ "https://mesto.studentslesha.nomoreparties.sbs"
  //"http://localhost:3000"
 );
 
