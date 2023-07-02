@@ -1,58 +1,55 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const { errors } = require('celebrate');
-// eslint-disable-next-line import/no-unresolved
-const cors = require('cors');
-// eslint-disable-next-line no-unused-vars, import/no-extraneous-dependencies
 const helmet = require('helmet');
-const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
-const { createUserValid, loginValid } = require('./middlewares/validation');
-const NotFound = require('./errors/NotFound');
+const cors = require('cors');
+// const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
+const { errors } = require('celebrate');
+const router = require('./routes/routes');
 const errorHandler = require('./middlewares/errorHandler');
+const {
+  requestLogger,
+  errorLogger,
+} = require('./middlewares/logger');
 
-const { PORT = 3000, bd = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
-
 app.use(cors());
-app.use(helmet());
 
-app.use(express.json());
-app.use(bodyParser.json());
-const { createUser, login } = require('./controlles/login');
-
-app.post('/signin', loginValid, login);
-app.post('/signup', createUserValid, createUser);
-
-app.use(usersRouter);
-app.use(cardsRouter);
+// FOR TESTING PURPOSES ONLY //
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
-app.use((req, res, next) => {
-  next(new NotFound('Страница по этому адресу не найдена'));
+// TESTING PM2 AUTO RESTART //
+
+mongoose
+  .connect('mongodb://127.0.0.1:27017/mestodb')
+  .then(() => console.log('Connected to DB'))
+  .catch((err) => console.log('Server Connection Error!!!\n', err));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
+
+app.use(requestLogger);
+
+app.use(limiter);
+app.use(express.json());
+// app.use(cookieParser());
+app.use(helmet());
+
+app.use(router);
+
+app.use(errorLogger);
+
 app.use(errors());
 app.use(errorHandler);
 
-mongoose.connect(bd)
-  .then(() => {
-    // eslint-disable-next-line no-console
-    console.log('Подключение к базе состоялось');
-
-    app.listen(PORT, () => {
-      // eslint-disable-next-line no-console
-      console.log(`Приложение работает на порте ${PORT}`);
-    });
-  })
-
-  .catch((err) => {
-    // eslint-disable-next-line no-console
-    console.log('Ошибка подключения к базе', err);
-
-    process.exit();
-  });
+app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));

@@ -1,14 +1,3 @@
-Проект express-mesto-gha
+[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
 
-фронтент + бэкент
-подготовка сервера и базы данных
 
-Технологии:
-
-Node.js
-express.js
-MongoDB
-Mongoose
-
-Ссылка на проверку:
-https://github.com/Ermolay1/express-mesto-gha/actions

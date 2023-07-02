@@ -37,35 +37,34 @@ function App() {
   const [isInfoTolltipSuccess, setIsInfoTolltipSuccess] = useState(false);
   const [isInfoTolltipFail, setIsInfotolltipFail] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
+  
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt){
+      Promise.all([api.getCards(),api.getCurrentUser()])
+        .then(([cardData, userData]) => {
+          setCards(cardData.reverse());
+          setCurrentUser(userData);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
-      api
-        .getAllCardWhithUser()
-        .then(([cards, user]) => {
-          setCards(cards);
-          setCurrentUser(user);
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      authApi
+        .checkToken(jwt)
+        .then((data) => {
+          if (data) {
+            setIsLoggedIn(true);
+            setHeaderEmail(data.data.email);
+            navigate("/", { replace: true });
+          }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     }
-  }, [isLoggedIn, navigate]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
-      api
-        .getUserInfo()
-        .then((user) => {
-          setCurrentUser(user);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [isLoggedIn, navigate]);
+  }, [navigate]);
 
   function showTooltipResponse(signedIn) {
     setIsInfoTolltipSuccess(true);
@@ -87,9 +86,9 @@ function App() {
     setSelectedCard(cardId);
   }
 
-  function handleDeleteCardClick(cardId) {
+  function handleDeleteCardClick(card) {
     setIsDeletePopupOpen(true);
-    setRemovedCardId(cardId);
+    setRemovedCardId(card);
   }
 
   function closeAllPopups() {
@@ -106,35 +105,33 @@ function App() {
   const [isLoadingNewCard, setIsLoadingNewCard] = useState(false);
   const [isLoadingUpdateAvatar, setIsLoadingUpdateAvatar] = useState(false);
 
-  function handleUpdateUser(data) {
-    console.log("dssd");
+  function handleUpdateUser(userData) {
     setIsLoadingUpdateUser(true);
+  
     api
-      .createNewProfile(data.name, data.about)
-      .then((newUser) => {
-        setCurrentUser(newUser);
+      .createNewUser(userData.name, userData.description)
+      .then((data) => {
+        setCurrentUser(data);
         closeAllPopups();
       })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {});
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoadingUpdateUser(false));
   }
 
-  function handleDeleteCard(cardId) {
+  function handleDeleteCard(card) {
     setIsLoadingDeleteCard(true);
     api
-      .deleteCard(cardId)
+      .deleteCard(card._id)
       .then(() => {
-        setCards((cards) => cards.filter((card) => card._id !== cardId));
+        setCards((state) => state.filter((c) => c._id !== card._Id));
         closeAllPopups();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => {
-        setIsLoadingDeleteCard(false);
-      });
+      .finally(() => 
+        setIsLoadingDeleteCard(false)
+      );
   }
 
   function handleCardLike(card) {
@@ -163,10 +160,10 @@ function App() {
       });
   }
 
-  function handleUpdateAvatar(userAvatarLink) {
+  function handleUpdateAvatar(data) {
     setIsLoadingUpdateAvatar(true);
     api
-      .editAvatar({ item: userAvatarLink })
+      .editAvatar(data.link)
       .then((newAvatar) => {
         setCurrentUser(newAvatar);
         closeAllPopups();
@@ -174,9 +171,9 @@ function App() {
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        setIsLoadingUpdateAvatar(false);
-      });
+      .finally(() => 
+        setIsLoadingUpdateAvatar(false)
+      );
   }
 
   function handleRegisterUser(email, password) {
@@ -213,23 +210,7 @@ function App() {
         console.log(err);
       });
   }
-
-  useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      authApi
-        .checkToken(jwt)
-        .then((data) => {
-          if (data) {
-            setIsLoggedIn(true);
-            setHeaderEmail(data.data.email);
-            navigate("/", { replace: true });
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [navigate]);
-
+  
   const handleSignOut = () => {
     setIsLoggedIn(false);
     setHeaderEmail("");

@@ -1,62 +1,61 @@
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, Segments } = require('celebrate');
+const { URL_REGEX } = require('../utils/constants');
 
-const avatarRegExp = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-
-const getUsersByIdValid = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().required().hex().length(24),
-  }),
-});
-
-const createUserValid = celebrate({
-  body: Joi.object().keys({
+const validateSignUp = celebrate({
+  [Segments.BODY]: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(avatarRegExp),
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    avatar: Joi.string().pattern(URL_REGEX),
+    email: Joi.string().email().required(),
+    password: Joi.string().required().min(6),
   }),
 });
 
-const updateUserValid = celebrate({
-  body: Joi.object().keys({
+const validateLogin = celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required().min(6),
+  }),
+});
+
+const validateUpdateProfile = celebrate({
+  [Segments.BODY]: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
 });
 
-const updateAvatarValid = celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string().required().pattern(avatarRegExp),
+const validateUpdateAvatar = celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    avatar: Joi.string().pattern(URL_REGEX),
   }),
 });
 
-const loginValid = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+const validateUserId = celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.string().hex().length(24),
   }),
 });
 
-const createCardsValid = celebrate({
-  body: Joi.object().keys({
+const validateCardId = celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    cardId: Joi.string().hex().length(24),
+  }),
+});
+
+const validateCreateCard = celebrate({
+  [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().pattern(avatarRegExp),
-  }),
-});
-
-const cardIdValid = celebrate({
-  params: Joi.object().keys({
-    cardId: Joi.string().required().hex().length(24),
+    link: Joi.string().required().pattern(URL_REGEX),
   }),
 });
 
 module.exports = {
-  cardIdValid,
-  updateAvatarValid,
-  getUsersByIdValid,
-  createUserValid,
-  updateUserValid,
-  loginValid,
-  createCardsValid,
+  validateSignUp,
+  validateLogin,
+  validateUpdateProfile,
+  validateUpdateAvatar,
+  validateUserId,
+  validateCardId,
+  validateCreateCard,
 };

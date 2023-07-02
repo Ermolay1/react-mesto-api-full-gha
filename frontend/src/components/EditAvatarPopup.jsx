@@ -8,6 +8,7 @@ function EditAvatarPopup({ isOpen, isLoading, onUpdateAvatar, onClose }) {
   const formValid = linkError || link === "";
 
   useEffect(() => {
+    
     if (!isOpen) {
       setLink("");
       setLinkError("Это поле не может быть пустым");

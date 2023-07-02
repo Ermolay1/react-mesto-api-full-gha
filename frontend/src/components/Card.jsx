@@ -5,7 +5,7 @@ import { useContext } from "react";
 function Card({ card, onCardClick, deleteCardClick, onCardLike }) {
   const currentUser = useContext(CurrentUserContext);
 
-  const isOwn = card.owner._id === currentUser._id;
+  const isOwn = card.owner === currentUser._id;
 
   const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
@@ -22,7 +22,7 @@ function Card({ card, onCardClick, deleteCardClick, onCardLike }) {
   }
 
   function handleDeleteClick() {
-    deleteCardClick(card._id);
+    deleteCardClick(card);
   }
   return (
     <li className="element">

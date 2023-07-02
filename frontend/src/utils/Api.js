@@ -6,7 +6,7 @@ class Api {
 
   _getHeaders() {
     return {
-      authorization: this._token,
+      authorization: `Bearer ${localStorage.getItem('jwt')}`, 
       "Content-Type": "application/json",
     };
   }
@@ -18,7 +18,7 @@ class Api {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  _request(url, options) {
+ _request(url, options) {
     return fetch(url, options).then(this._getJson);
   }
    
@@ -30,6 +30,7 @@ class Api {
         authorization: `Bearer ${token}`,
       },
     }).then(this._getJson);
+    
   }
 
   getCards() {
@@ -44,7 +45,7 @@ class Api {
 
   deleteCard(id) {
     const token = localStorage.getItem("jwt");
-    return fetch(`${this._basePath}/cards/${id} `, {
+    return fetch(`${this._basePath}/cards/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
@@ -76,6 +77,7 @@ class Api {
         about: job,
       }),
     }).then(this._getJson);
+  
   }
 
   addNewCard({ item }) {
@@ -103,7 +105,8 @@ class Api {
           },
       })
       .then(this._getJson);
-  }
+    }
+  
 
   _deleteLike(id) {
     const token = localStorage.getItem("jwt");
@@ -115,6 +118,7 @@ class Api {
           },
       })
       .then(this._getJson);
+    
   }
 
   changeLikeCardStatus(id, isLiked) {
@@ -122,7 +126,7 @@ class Api {
   }
 
   editAvatar(link) {
-    const token = localStorage.getItem("jwt");
+   const token = localStorage.getItem("jwt");
       return fetch(`${this._basePath}/users/me/avatar`, {
         method: "PATCH",
         headers: {
@@ -133,14 +137,14 @@ class Api {
           avatar: link,
         }),
       }).then(this._getJson);
-}
+    };
 }
 
 const api = new Api(
   //"https://mesto.nomoreparties.co/v1/cohort-61",
  // "71ce217b-0d84-4894-b27b-2d906663c6db"
- "https://mesto.studentslesha.nomoreparties.sbs"
- //"http://localhost:3000"
+ //"https://mesto.studentslesha.nomoreparties.sbs"
+ "http://localhost:3000"
 );
 
 export default api;
