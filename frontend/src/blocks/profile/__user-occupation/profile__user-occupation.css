@@ -1,0 +1,22 @@
+.profile__user-occupation {
+  color: #fff;
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  /* grid-column: 1 / span 2; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 336px;
+}
+
+@media (max-width: 700px) {
+
+  .profile__user-occupation {
+    text-align: center;
+    font-size: 14px;
+    line-height: 17px;
+    max-width: 220px;
+  }
+}

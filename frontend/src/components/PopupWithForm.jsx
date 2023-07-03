@@ -1,50 +1,51 @@
-import React, { useEffect } from "react";
-import Form from "./Form";
+import classNames from "classnames";
 
 function PopupWithForm({
+  title,
   name,
+  children,
   isOpen,
   onClose,
   onSubmit,
-  title,
-  children,
   buttonText,
-  isFormValid,
+  isValid,
+  isDirty,
 }) {
-  useEffect(() => {
-    function handleEscClose(evt) {
-      if (evt.key === "Escape") onClose();
-    }
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscClose);
-      return () => document.removeEventListener("keydown", handleEscClose);
-    }
-  }, [isOpen, onClose]);
-
-  const popupClass = `popup  popup_type_${name} ${
-    isOpen ? "popup_opened" : ""
-  }`;
   return (
-    <section className={popupClass} onClick={onClose}>
-      <div className="popup__container" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={classNames("popup", `popup_type_${name}`, {
+        popup_active: isOpen,
+      })}
+    >
+      <div className="popup__window">
         <button
+          className="popup__close-btn"
           type="button"
-          className="popup__close popup__button-close"
-          aria-label="закрыть"
+          aria-label="Закрыть попап"
           onClick={onClose}
-        ></button>
-        <h3 className="popup__title">{title}</h3>
-        <Form
+        />
+        <h2 className="popup__title">{title}</h2>
+        <form
           onSubmit={onSubmit}
-          title={title}
+          className={"popup__form"}
           name={name}
-          children={children}
-          buttonText={buttonText}
-          isFormValid={isFormValid}
-        ></Form>
+          method="POST"
+          noValidate
+        >
+          {children}
+          <button
+            className={classNames("popup__submit-btn", {
+              "popup__submit-btn_inactive": !isValid || !isDirty,
+            })}
+            type="submit"
+            aria-label={buttonText}
+            disabled={!isValid || !isDirty}
+          >
+            {buttonText}
+          </button>
+        </form>
       </div>
-    </section>
+    </div>
   );
 }
 

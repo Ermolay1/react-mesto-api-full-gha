@@ -1,69 +1,59 @@
-import React from "react";
+import { useContext } from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import pencil from "../images/pencil.svg";
-import plus from "../images/plus.svg";
-import { useContext } from "react";
 
 function Main({
   onEditAvatar,
   onEditProfile,
-  onNewCard,
-  cards,
+  onAddPlace,
   onCardClick,
-  onCardDelete,
   onCardLike,
+  onCardDeleteConfirm,
+  cards,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
-  const cardsElements = cards.map((card) => (
-    <Card
-      key={card._id}
-      card={card}
-      onCardClick={onCardClick}
-      deleteCardClick={onCardDelete}
-      onCardLike={onCardLike}
-    />
-  ));
-
   return (
-    <main className="content">
+    <main className="main">
       <section className="profile">
-        <img
-          className="profile__image"
-          src={currentUser.avatar}
-          alt="Аватар пользователя"
-        />
-        <button className="profile__button-avatar" onClick={onEditAvatar} />
-
-        <div className="profile__info">
-          <div className="profile__container">
-            <h1 className="profile__title">{currentUser.name}</h1>
-            <button
-              type="button"
-              className="profile__edit-button profile__edit"
-              aria-label="изменить"
-              onClick={onEditProfile}
-            >
-              <img
-                className="profile__button-image"
-                src={pencil}
-                alt="карандаш"
-              />
-            </button>
-          </div>
-          <h2 className="profile__subtitle">{currentUser.about}</h2>
+        <button onClick={onEditAvatar} className="profile__avatar-btn">
+          <img
+            className="profile__avatar"
+            src={currentUser.avatar}
+            alt="Аватарка пользователя"
+          />
+        </button>
+        <div className="profile__user-info">
+          <h1 className="profile__user-name">{currentUser.name}</h1>
+          <button
+            onClick={onEditProfile}
+            className="profile__edit-btn"
+            type="button"
+            aria-label="Редактировать профиль"
+          ></button>
+          <p className="profile__user-occupation">{currentUser.about}</p>
         </div>
         <button
-          className="profile__addbutton"
-          aria-label="добавить"
-          onClick={onNewCard}
-        >
-          <img className="profile__addbutton-image" src={plus} alt="плюс" />
-        </button>
+          onClick={onAddPlace}
+          className="profile__btn-add-img"
+          type="button"
+          aria-label="Добавить изображение"
+        ></button>
       </section>
-      <section>
-        <ul className="elements">{cardsElements}</ul>
+      <section className="cards">
+        <ul className="cards__list">
+          {cards.map((card) => {
+            return (
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={onCardClick}
+                onCardLike={onCardLike}
+                onCardDeleteConfirm={onCardDeleteConfirm}
+              />
+            );
+          })}
+        </ul>
       </section>
     </main>
   );

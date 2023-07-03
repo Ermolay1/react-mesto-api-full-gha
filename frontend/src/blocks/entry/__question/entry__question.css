@@ -1,0 +1,11 @@
+.entry__question {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+  margin: 0;
+  color: #fff;
+  font-size: 14px;
+  line-height: 17px;
+  white-space: nowrap;
+}

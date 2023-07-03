@@ -1,0 +1,15 @@
+.cards__like {
+  background-image: url(../../../images/heart_type_disabled.svg);
+  width: 22px;
+  height: 19px;
+  color: #fff;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 200ms;
+}
+
+.cards__like:hover {
+  opacity: 0.5;
+}

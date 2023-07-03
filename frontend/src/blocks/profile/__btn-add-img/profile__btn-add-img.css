@@ -1,0 +1,27 @@
+.profile__btn-add-img {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #fff;
+  border-radius: 2px;
+  background-color: #000;
+  margin-left: auto;
+  background-image: url(../../../images/plus_type_active.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: opacity 100ms;
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile__btn-add-img:hover {
+  opacity: 0.6;
+}
+
+@media (max-width: 700px) {
+  .profile__btn-add-img {
+    width: 282px;
+    margin: 0 auto;
+    margin-top: 36px;
+    background-size: 16px 16px;
+  }
+}

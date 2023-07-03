@@ -1,0 +1,45 @@
+/* .profile__avatar-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-image: url("../../../images/pencil_type_active.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px 26px;
+} */
+
+.profile__avatar-btn {
+  width: 120px;
+  height: 120px;
+  background-color: #000;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.profile__avatar-btn:focus {
+  outline: none;
+}
+
+.profile__avatar-btn::before {
+  content: "";
+  background-image: url("../../../images/pencil_type_active.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px 26px;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.profile__avatar-btn:hover::before {
+  opacity: 1;
+}

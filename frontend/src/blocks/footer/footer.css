@@ -1,17 +1,14 @@
-.footer{
-    width: 880px;
-    margin-top: 67px;
-    margin-bottom: 60px;
+.footer {
+  max-width: 880px;
+  margin: 67px auto 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 282px);
+  column-gap: 17px;
+  justify-content: center;
 }
-@media screen and (max-width: 880px) {
-    .footer{
-        width: 100%;
-    }
-}
-@media screen and (max-width: 590px) {
-    .footer{
-        width: 282px;
-        margin: 48px 15px 36px;
-    
-    }
+
+@media (max-width: 580px) {
+  .footer {
+    margin: 48px auto 36px;
+  }
 }

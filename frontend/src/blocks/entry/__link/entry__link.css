@@ -1,0 +1,8 @@
+.entry__link {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  padding: 15px 0 0;
+  font-size: 14px;
+  line-height: 17px;
+}

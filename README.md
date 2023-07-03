@@ -14,3 +14,7 @@ IP-адрес 84.201.154.84
 Frontend https://lesha.mesto.studentslesha.nomoreparties.sbs
 
 Backend https://mesto.studentslesha.nomoreparties.sbs
+
+
+ Автор: Кулишин Алексей
+ email: oookosmos.m@yandex.ru

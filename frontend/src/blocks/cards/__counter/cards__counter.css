@@ -1,0 +1,12 @@
+.cards__counter {
+  margin: 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #000000;
+  /* maybe remove height later.
+  ** right now, without number the heart
+  ** bounces up and down */
+  height: 16px;
+}

@@ -1,0 +1,21 @@
+.entry__input {
+  color: #ccc;
+  background-color: #000;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  padding: 0 0 8px;
+}
+
+.entry__input:not(:last-of-type) {
+  margin: 0 0 28px;
+}
+
+.entry__input:focus {
+  outline: none;
+}
+
+.entry__input::placeholder {
+  color: #ccc;
+  font-size: 14px;
+  line-height: 17px;
+}

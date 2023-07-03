@@ -1,64 +1,62 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
+import { useForm } from "react-hook-form";
+import classNames from "classnames";
 
-function EditAvatarPopup({ isOpen, isLoading, onUpdateAvatar, onClose }) {
-  const [link, setLink] = useState("");
-  const [linkDirty, setLinkDirty] = useState(false);
-  const [linkError, setLinkError] = useState("Это поле не может быть пустым");
-  const formValid = linkError || link === "";
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid, isDirty },
+  } = useForm({ mode: "onChange" });
+
+  function onSubmit({ avatar }) {
+    onUpdateAvatar({ avatar });
+  }
 
   useEffect(() => {
-    
-    if (!isOpen) {
-      setLink("");
-      setLinkError("Это поле не может быть пустым");
-      setLinkDirty(false);
-    }
-  }, [isOpen]);
-
-  const setBlurHandler = (e) => {
-    setLinkDirty(true);
-  };
-
-  const handleLinkChange = (e) => {
-    setLink(e.target.value);
-    if (!e.target.validity.valid) setLinkError(e.target.validationMessage);
-    else setLinkError("");
-  };
-
-  const linkSpanClassName = `popup__input-error popup-avatar-error
-    ${linkDirty && linkError ? "popup__input-error_active" : ""}`;
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    onUpdateAvatar({
-      link: link,
-    });
-  }
+    reset();
+  }, [isOpen, reset]);
 
   return (
     <PopupWithForm
-      name="new-avatar"
-      title="Обновить аватар"
-      buttonText={isLoading ? "Сохранение" : "Сохранить"}
+      title={"Обновить аватар"}
+      name={"change-avatar"}
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleSubmit}
-      isFormValid={formValid}
+      buttonText={isLoading ? "Сохранение..." : "Сохранить"}
+      onSubmit={handleSubmit(onSubmit)}
+      isValid={isValid}
+      isDirty={isDirty}
     >
       <input
-        id="popup-avatar"
-        className="popup__input popup__form-input popup__input_type_value-link"
-        name="link"
+        className={classNames("popup__input", {
+          popup__input_type_error: errors.avatar?.message,
+        })}
         placeholder="Ссылка на картинку"
-        required
         type="url"
-        value={link}
-        onBlur={(e) => setBlurHandler(e)}
-        onChange={(e) => handleLinkChange(e)}
+        {...register("avatar", {
+          required: {
+            value: true,
+            message: "Please enter a URL.",
+          },
+          pattern: {
+            value:
+              /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+            message: "Invalid URL format",
+          },
+        })}
       />
-      <span className={linkSpanClassName}>{linkError}</span>
+      <span
+        className={classNames("popup__input-error-msg", {
+          "popup__input-error-msg_active": errors.avatar?.message,
+        })}
+      >
+        {errors.avatar?.message}
+      </span>
     </PopupWithForm>
   );
 }
+
 export default EditAvatarPopup;

@@ -1,54 +1,68 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
+import { useState } from "react";
 
-function Login({ isLoggedIn, onLogin }) {
-  const navigate = useNavigate();
+function Login({ loginUser, buttonText }) {
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+  });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  function handleChange(e) {
+    const { name, value } = e.target;
 
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value);
-  }
-  function handlePasswordChange(evt) {
-    setPassword(evt.target.value);
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onLogin(email, password);
-  }
-
-  if (isLoggedIn) {
-    return navigate("/", { replace: true });
+    loginUser(formValue);
   }
   return (
-    <div className="register">
-      <p className="register__title">Вход</p>
-      <form className="register__form" onSubmit={handleSubmit} noValidate>
+    <div className="entry">
+      <h2 className="entry__title">Вход</h2>
+      <form
+        onSubmit={handleSubmit}
+        className={"entry__form"}
+        name="login"
+        method="POST"
+        // noValidate
+      >
         <input
-          className="register__input"
-          value={email}
-          placeholder="Email"
+          className="entry__input"
           type="email"
           name="email"
-          id="email"
-          onChange={handleEmailChange}
+          placeholder="Email"
+          autoComplete="username"
+          required
+          value={formValue.email}
+          onChange={handleChange}
         />
         <input
-          className="register__input"
-          value={password}
-          placeholder="Password"
+          className="entry__input"
           type="password"
           name="password"
-          id="password"
-          onChange={handlePasswordChange}
+          placeholder="Пароль"
+          autoComplete="current-password"
+          required
+          value={formValue.password}
+          onChange={handleChange}
         />
-        <button type="submit" className="register__submit">
-          Войти
+        <button
+          className={classNames("entry__submit-btn", {
+            // "entry__submit-btn_inactive": !isValid || !isDirty,
+          })}
+          type="submit"
+          aria-label={buttonText}
+          // disabled={!isValid || !isDirty}
+        >
+          {buttonText}
         </button>
       </form>
     </div>
   );
 }
+
 export default Login;

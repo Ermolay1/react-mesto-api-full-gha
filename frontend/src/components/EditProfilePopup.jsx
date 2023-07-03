@@ -1,106 +1,97 @@
-import React from "react";
-import { useState, useContext, useEffect } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useContext, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useForm } from "react-hook-form";
+import classNames from "classnames";
 
-function EditProfilePopup({ isOpen, isLoading, onUpdateUser, onClose }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [nameDirty, setNameDirty] = useState(false);
-  const [descriptionDirty, setDescriptionDirty] = useState(false);
-  const [nameError, setNameError] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
-
-  const formValid = nameError || descriptionError;
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid, isDirty },
+  } = useForm({ mode: "onChange" });
 
   useEffect(() => {
-    if (!isOpen) {
-      setNameError("");
-      setDescriptionError("");
-      setDescriptionDirty(false);
-      setNameDirty(false);
-      setName(currentUser.name);
-      setDescription(currentUser.about);
-    }
-  }, [currentUser, isOpen]);
+    reset();
+    setValue("name", currentUser.name);
+    setValue("about", currentUser.about);
+  }, [isOpen, currentUser, reset, setValue]);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-    if (!e.target.validity.valid) setNameError(e.target.validationMessage);
-    else setNameError("");
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-    if (!e.target.validity.valid)
-      setDescriptionError(e.target.validationMessage);
-    else setDescriptionError("");
-  };
-
-  const setBlurHandler = (e) => {
-    // eslint-disable-next-line default-case
-    switch (e.target.name) {
-      case "name":
-        setNameDirty(true);
-        break;
-      case "about":
-        setDescriptionDirty(true);
-        break;
-    }
-  };
-
-  const nameSpanClassName = `popup__input-error popup-name-error 
-    ${nameDirty && nameError ? "popup__input-error_active" : ""}`;
-  const aboutSpanClassName = `popup__input-error popup-description-error 
-    ${descriptionDirty && descriptionError ? "popup__input-error_active" : ""}`;
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    onUpdateUser({
-      name: name,
-      about: description,
-    });
+  function onSubmit({ name, about }) {
+    // Передаём значения управляемых компонентов во внешний обработчик
+    onUpdateUser({ name, about });
   }
 
   return (
     <PopupWithForm
-      onSubmit={handleSubmit}
-      name="edit"
-      title="Редактировать профиль"
-      buttonText={isLoading ? "Сохранение" : "Сохранить"}
+      title={"Редактировать профиль"}
+      name={"profile"}
       isOpen={isOpen}
       onClose={onClose}
-      isFormValid={formValid}
+      buttonText={isLoading ? "Сохранение..." : "Сохранить"}
+      onSubmit={handleSubmit(onSubmit)}
+      isValid={isValid}
+      isDirty={isDirty}
     >
       <input
-        id="popup-name"
-        className="popup__input popup__input_value_name "
+        className={classNames("popup__input", {
+          popup__input_type_error: errors.name?.message,
+        })}
         type="text"
-        name="name"
         placeholder="Имя"
-        required
-        minLength="2"
-        maxLength="40"
-        value={name}
-        onBlur={(e) => setBlurHandler(e)}
-        onChange={(e) => handleNameChange(e)}
+        {...register("name", {
+          required: {
+            value: true,
+            message: "Name required",
+          },
+          minLength: {
+            value: 2,
+            message: "Text must be minimum 2 characters long",
+          },
+          maxLength: {
+            value: 40,
+            message: "Text must be maximum 40 characters long",
+          },
+        })}
       />
-      <span className={nameSpanClassName}>{nameError}</span>
+      <span
+        className={classNames("popup__input-error-msg", {
+          "popup__input-error-msg_active": errors.name?.message,
+        })}
+      >
+        {errors.name?.message}
+      </span>
       <input
-        id="popup-description"
-        className="popup__input popup__input_value_description"
+        className={classNames("popup__input", {
+          popup__input_type_error: errors.about?.message,
+        })}
         type="text"
-        name="about"
-        placeholder="Профессия"
-        required
-        minLength="2"
-        maxLength="200"
-        value={description}
-        onBlur={(e) => setBlurHandler(e)}
-        onChange={(e) => handleDescriptionChange(e)}
+        placeholder="О себе"
+        {...register("about", {
+          required: {
+            value: true,
+            message: "About required",
+          },
+          minLength: {
+            value: 2,
+            message: "Text must be minimum 2 characters long",
+          },
+          maxLength: {
+            value: 200,
+            message: "Text must be maximum 200 characters long",
+          },
+        })}
       />
-      <span className={aboutSpanClassName}>{descriptionError}</span>
+      <span
+        className={classNames("popup__input-error-msg", {
+          "popup__input-error-msg_active": errors.about?.message,
+        })}
+      >
+        {errors.about?.message}
+      </span>
     </PopupWithForm>
   );
 }

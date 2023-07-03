@@ -16,7 +16,7 @@
 
 Подключение регистрации и авторизации
 
-ссылка на проект  https://ermolay1.github.io/react-mesto-auth/
+
  
  Автор: Кулишин Алексей
  email: oookosmos.m@yandex.ru
