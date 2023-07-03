@@ -9,11 +9,11 @@
 
 ## Ссылки на проект
 
-IP <ipv4> 84.201.154.84
+IP 84.201.154.84
 
-Frontend <url> lesha.mesto.studentslesha.nomoreparties.sbs
+Frontend <lesha.mesto.studentslesha.nomoreparties.sbs>
 
-Backend <url> mesto.studentslesha.nomoreparties.sbs
+Backend <mesto.studentslesha.nomoreparties.sbs>
 
 
  Автор: Кулишин Алексей
