@@ -11,9 +11,9 @@
 
 IP-адрес 84.201.154.84
 
-Frontend https://lesha.mesto.studentslesha.nomoreparties.sbs
+Frontend URL: lesha.mesto.studentslesha.nomoreparties.sbs
 
-Backend https://mesto.studentslesha.nomoreparties.sbs
+Backend URL: mesto.studentslesha.nomoreparties.sbs
 
 
  Автор: Кулишин Алексей
