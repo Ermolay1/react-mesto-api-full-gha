@@ -1,6 +1,6 @@
 
- export const BASE_URL = "http://localhost:3000";
-//export const BASE_URL = "https://mesto.studentslesha.nomoreparties.sbs";
+ //export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://mesto.studentslesha.nomoreparties.sbs";
 
 function getJson(res) {
   if (res.ok) {
