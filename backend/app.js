@@ -16,11 +16,12 @@ const { PORT = 3000, bd = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
 app.use(cors());
 
-app.get('/crash-test', () => {
+// eslint-disable-next-line spaced-comment
+/*app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-});
+});*/
 
 app.use(requestLogger);
 app.use(express.json());
