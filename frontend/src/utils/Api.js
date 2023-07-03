@@ -76,8 +76,8 @@ class Api {
 
 
 const api = new Api(
-   //"http://localhost:3000",
-  "https://mesto.studentslesha.nomoreparties.sbs",
+   "http://localhost:3000",
+  //"https://mesto.studentslesha.nomoreparties.sbs",
 );
 
 export default api;
